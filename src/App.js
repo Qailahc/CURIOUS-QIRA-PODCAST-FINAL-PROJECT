@@ -3,7 +3,8 @@ import styled, { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './utils/Themes';
 import Sidebar from './components/Sidebar';
 import NavBar from './components/NavBar';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from "./pages/Dashboard"
 
 const Container = styled.div`
   display: flex;
@@ -43,6 +44,10 @@ function App() {
            darkMode={setDarkMode}
            setDarkMode={darkMode} 
            />
+           <Routes>
+            <Route path="/" exact element={<Dashboard />} />
+
+           </Routes>
           </Frame>
         </Container>
       </BrowserRouter>
