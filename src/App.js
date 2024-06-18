@@ -5,6 +5,11 @@ import Sidebar from './components/Sidebar';
 import NavBar from './components/NavBar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from "./pages/Dashboard"
+import Search from "./pages/Search"
+import Favourites from "./pages/Favourites"
+import Profile from "./pages/Profile"
+import PodcastDetails from "./pages/PodcastDetails"
+import DisplayPodcast from "./pages/DisplayPocast"
 
 const Container = styled.div`
   display: flex;
@@ -46,6 +51,11 @@ function App() {
            />
            <Routes>
             <Route path="/" exact element={<Dashboard />} />
+            <Route path="/search" exact element={<Search />} />
+            <Route path="/favourite" exact element={<Favourites />} />
+            <Route path="/profile" exact element={<Profile />} />
+            <Route path="/podcast/:id" exact element={<PodcastDetails/>} />
+            <Route path="/showpodcasts/:type" exact element={<DisplayPodcast/>} />
 
            </Routes>
           </Frame>
