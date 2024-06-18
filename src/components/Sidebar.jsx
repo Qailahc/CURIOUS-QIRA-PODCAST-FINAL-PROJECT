@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { HomeRounded, CloseRounded, SearchRounded, FavoriteRounded, LightModeRounded, LogoutRounded } from "@mui/icons-material"
+import { HomeRounded, CloseRounded, SearchRounded, FavoriteRounded, LightModeRounded, LogoutRounded, DarkModeRounded } from "@mui/icons-material"
 import LogoIcon from "../images/1.png";
 import { Link } from "react-router-dom";
 
@@ -18,11 +18,13 @@ flex: 0.5;
     z-index: 1000;
     width: 100%;
     max-width: 250px;
-    left: ${({ setMenuOpen }) => (setMenuOpen ? "0" : "-100%")};
+    left: ${({ menuOpen }) => (menuOpen ? "0" : "-100%")};
     transition: 0.3s ease-in-out;`;
 
    const Flex = styled.div`
+    width: 100%;
     justify-content: space-between;
+    flex-direction: row;
     display: flex;
     align-items: center;
     padding: 0px 16px;
@@ -30,7 +32,6 @@ flex: 0.5;
   `;
 
  const Logo = styled.div`
-  width: 100%;
   color: ${({ theme }) => theme.primary};
   display: flex;
   align-items: center;
@@ -79,57 +80,55 @@ const Image = styled.img`
   height: 40px;
 `;
 
-const menuItems = [
-    {
-        link: "/",
-        name: "Dashboard",
-        icon: <HomeRounded />
-    },
-
-    {
-        link: "/search",
-        name: "Search",
-        icon: <SearchRounded />
-    },
-
-    {
-        link: "/favorites",
-        name: "Favorites",
-        icon: <FavoriteRounded />
-    }
-
-]
-
-const button = [
-    {
-        fun: () => console.log("Light Mode"),
-        name: "Light Mode",
-        icon: <LightModeRounded />
-
-    },
-
-    {
-        fun: () => console.log("Logout"),
-        name: "Logout",
-        icon: <LogoutRounded />
-
-    }
-]
-
-
-const Sidebar = () => {
+const Sidebar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
+    const menuItems = [
+        {
+            link: "/",
+            name: "Dashboard",
+            icon: <HomeRounded />
+        },
+    
+        {
+            link: "/search",
+            name: "Search",
+            icon: <SearchRounded />
+        },
+    
+        {
+            link: "/favorites",
+            name: "Favorites",
+            icon: <FavoriteRounded />
+        }
+    
+    ]
+    
+    const button = [
+        {
+            fun: () => setDarkMode(!darkMode),
+            name: darkMode ? "Light Mode" : "Dark Mode",
+            icon: darkMode ? <LightModeRounded /> : <DarkModeRounded />
+    
+        },
+    
+        {
+            fun: () => console.log("Logout"),
+            name: "Logout",
+            icon: <LogoutRounded />
+    
+        }
+    ]
     return (
-        <MenuContainer>
+        <MenuContainer menuOpen={menuOpen}>
             <Flex>
             <Logo>
             <Image src={LogoIcon} />
-                Curious Qira Podcast</Logo>
-            <Close>
+                CURIOUS QIRA PODCAST</Logo>
+            <Close onClick={() => setMenuOpen(false)}>
                 <CloseRounded />
             </Close>
             </Flex>
             {menuItems.map((item) => 
-                <Link to={item.link}>
+                <Link to={item.link} style={{ textDecoration : "none"}}>
             <Elements>
                 {item.icon}
                 <HomeRounded />
@@ -139,13 +138,11 @@ const Sidebar = () => {
             )}
             <HR />
             {button.map((item) => 
-                <Link to={item.link}>
-            <Elements>
+            <Elements onClick={item.fun}>
                 {item.icon}
                 <HomeRounded />
                 <NavText>{item.name}</NavText>
             </Elements>
-            </Link>
             )}
         </MenuContainer>
     )
