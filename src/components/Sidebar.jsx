@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { HomeRounded, CloseRounded, SearchRounded, FavoriteRounded, LightModeRounded, LogoutRounded, DarkModeRounded } from "@mui/icons-material"
-import LogoIcon from "../images/1.png";
+import LogoIcon from "../images/Logo.png";
 import { Link } from "react-router-dom";
 
 const MenuContainer = styled.div`

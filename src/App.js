@@ -29,19 +29,20 @@ function App() {
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <BrowserRouter>
       <Container>
-        <Sidebar 
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-        darkMode={setDarkMode}
-        setDarkMode={darkMode}
-        />
+        {menuOpen && (
+          <Sidebar 
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+          darkMode={setDarkMode}
+          setDarkMode={darkMode}
+          />
+        )}
         <Frame> 
           <NavBar menuOpen={menuOpen}
            setMenuOpen={setMenuOpen}
            darkMode={setDarkMode}
            setDarkMode={darkMode} 
            />
-          CURIOUS QIRA PODCAST
           </Frame>
         </Container>
       </BrowserRouter>
