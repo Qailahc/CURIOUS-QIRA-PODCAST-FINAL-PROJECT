@@ -28,6 +28,7 @@ flex: 0.5;
   `;
 
  const Logo = styled.div`
+ width: 100%;
  color: ${({ theme }) => theme.primary};
   display: flex;
   align-items: center;
