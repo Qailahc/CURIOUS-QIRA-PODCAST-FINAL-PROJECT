@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './utils/Themes';
 import Sidebar from './components/Sidebar';
+import NavBar from './components/NavBar';
 import { BrowserRouter } from 'react-router-dom';
 
 const Container = styled.div`
@@ -29,11 +30,19 @@ function App() {
       <BrowserRouter>
       <Container>
         <Sidebar 
-        setMenuOpen={menuOpen}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
         darkMode={setDarkMode}
         setDarkMode={darkMode}
         />
-        <Frame> CURIOUS QIRA PODCAST</Frame>
+        <Frame> 
+          <NavBar menuOpen={menuOpen}
+           setMenuOpen={setMenuOpen}
+           darkMode={setDarkMode}
+           setDarkMode={darkMode} 
+           />
+          CURIOUS QIRA PODCAST
+          </Frame>
         </Container>
       </BrowserRouter>
     </ThemeProvider>

@@ -148,4 +148,4 @@ const Sidebar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
     )
 }
 
-export default Sidebar
+export default Sidebar;
