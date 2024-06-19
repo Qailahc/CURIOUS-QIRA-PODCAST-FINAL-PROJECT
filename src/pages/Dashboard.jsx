@@ -1,29 +1,25 @@
-import React from "react";
-import styled from "styled-components";
-import {Link} from "react-router-dom"
-import PodCard from "../components/PodCard";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
+// Styled-components for styling
 const DashBoardMain = styled.div`
-padding: 20px 30px;
-padding-bottom: 200px;
-height: 100%;
-overflow-y: scroll;
-display: flex;
-flex-direction: column;
- gap: 20px;
- @media (max-width: 768px){
-  padding: 6px 10px;
- }
+  padding: 20px 30px;
+  padding-bottom: 200px;
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    padding: 6px 10px;
+  }
 `;
 
 const FilterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  ${({ box, theme }) => box && `
-  background-color: ${theme.bg};
-  border-radius: 10px;
-  padding: 20px 30px;
-`}
   background-color: ${({ theme }) => theme.bg};
   border-radius: 10px;
   padding: 20px 30px;
@@ -36,69 +32,119 @@ const Topic = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @maedia (max-width: 768px){
+
+  @media (max-width: 768px) {
     font-size: 18px;
   }
-    `;
+`;
 
-    const Span = styled.span`
-    color: ${({ theme }) => theme.text_secondary};
-    font-size: 16px;
-    font-weight: 400;
-    cursor: pointer;
-    @media (max-width: 768px){
-      font-size: 14px;
-    }
-    color: ${({ theme }) => theme.primary};
-    &:hover{
-      transition: 0.2s ease-in-out;
-    }
-    `;
+const Span = styled.span`
+  color: ${({ theme }) => theme.primary};
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
 
-   const Podcast = styled.div`
-   display: flex;
-   flex-wrap: wrap;
-   gap: 14px;
-   padding: 18px 6px;
-   //center the items if only one item present
-   @media (max-width: 550px){
-   justify-content: center;
-   }
-   `;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 
+  &:hover {
+    transition: 0.2s ease-in-out;
+  }
+`;
 
+const Podcast = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px 6px;
+
+  // Center items if only one present
+  @media (max-width: 550px) {
+    justify-content: center;
+  }
+`;
+
+const Card = styled.div`
+  background-color: ${({ theme }) => theme.card_bg};
+  padding: 16px;
+  border-radius: 8px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const Image = styled.img`
+  width: 100%;
+  border-radius: 8px;
+`;
+
+const Genre = styled.div`
+  margin-top: 8px;
+  color: ${({ theme }) => theme.text_secondary};
+  font-size: 14px;
+`;
+
+const Date = styled.div`
+  margin-top: 4px;
+  color: ${({ theme }) => theme.text_tertiary};
+  font-size: 12px;
+`;
+
+// Dashboard component to fetch and display podcasts
 const Dashboard = () => {
-    return <DashBoardMain>
-        <FilterContainer>
-            <Topic>
-                #Spotlight
-                <Link to={`/showpodcasts/spotlight`}
-                style={{ textDecoration: "none" }}>
-                <Span>Show All</Span>
-                </Link>
-            </Topic>
-            <Podcast>
-                <PodCard />
-                <PodCard />
-                <PodCard />
-            </Podcast>
-        </FilterContainer>
+  const [podcasts, setPodcasts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null); // Track potential errors
 
-        <FilterContainer>
+  useEffect(() => {
+    const fetchPodcasts = async () => {
+      try {
+        const response = await fetch('https://podcast-api.netlify.app/shows');
+        const data = await response.json();
+        setPodcasts(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPodcasts();
+  }, []);
+
+  return (
+    <DashBoardMain>
+      {error && <p>Error fetching podcasts: {error.message}</p>}
+      {isLoading ? (
+        <p>Loading podcasts...</p>
+      ) : (
+        <>
+          <FilterContainer>
             <Topic>
-                Comedy
-                <Link to={`/showpodcasts/comedy`}
-                style={{ textDecoration: "none" }}>
+              #Spotlight
+              <Link to={`/showpodcasts/spotlight`} style={{ textDecoration: 'none' }}>
                 <Span>Show All</Span>
-                </Link>
+              </Link>
             </Topic>
             <Podcast>
-                <PodCard />
-                <PodCard />
-                <PodCard />
+              {podcasts.map((podcast) => (
+                <Card key={podcast.id}>
+                  <Image src={podcast.image} alt={podcast.title} />
+                  <Genre>{podcast.genre}</Genre>
+                  <Date>{podcast.date}</Date>
+                </Card>
+              ))}
             </Podcast>
-        </FilterContainer>
-        </DashBoardMain>;
+          </FilterContainer>
+          {/* Add more FilterContainers for other categories as needed */}
+        </>
+      )}
+    </DashBoardMain>
+  );
 };
 
 export default Dashboard;
+
