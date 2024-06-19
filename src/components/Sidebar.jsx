@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { HomeRounded, CloseRounded, SearchRounded, FavoriteRounded, LightModeRounded, LogoutRounded, DarkModeRounded } from "@mui/icons-material"
+import { HomeRounded, CloseRounded, SearchRounded, FavoriteRounded, LightModeRounded, LogoutRounded, DarkModeRounded } from "@mui/icons-material";
 import LogoIcon from "../images/Logo.png";
 import { Link } from "react-router-dom";
 
 const MenuContainer = styled.div`
-flex: 0.5;
+  flex: 0.5;
   flex-direction: column;
   height: 100vh;
   display: flex;
@@ -19,19 +19,21 @@ flex: 0.5;
     width: 100%;
     max-width: 250px;
     left: ${({ menuOpen }) => (menuOpen ? "0" : "-100%")};
-    transition: 0.3s ease-in-out;`;
+    transition: 0.3s ease-in-out;
+  }
+`;
 
-   const Flex = styled.div`
-    width: 100%;
-    justify-content: space-between;
-    flex-direction: row;
-    display: flex;
-    align-items: center;
-    padding: 0px 16px;
-    width: 86%;
-  `;
+const Flex = styled.div`
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  padding: 0px 16px;
+  width: 86%;
+`;
 
- const Logo = styled.div`
+const Logo = styled.div`
   color: ${({ theme }) => theme.primary};
   display: flex;
   align-items: center;
@@ -39,41 +41,38 @@ flex: 0.5;
   gap: 6px;
   font-weight: bold;
   font-size: 20px;
-  margin: 16px 0px;`;
+  margin: 16px 0px;
+`;
 
 const Close = styled.div`
-display: none;
-   @media (max-width: 1100px) {
-   display: block;
-}
-   `;
+  display: none;
+  @media (max-width: 1100px) {
+    display: block;
+  }
+`;
 
 const Elements = styled.div`
-padding: 4px 16px;
-display: flex;
-flex-direction: row;
-box-sizing: border-box;
-justify-content: flex-start;
-align-items: center;
-gap: 12px;
-cursor: pointer;
-color:  ${({ theme }) => theme.text_secondary};
-width: 100%;
-text-decoration: none !important;
-&:hover{
-    background-color: ${({ theme }) => theme.text_secondary + 50};
-}`;
-
-const NavText = styled.div`
-padding: 12px 0px;
-text-decoration: none !important;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  color: ${({ theme }) => theme.text_secondary};
+  width: 100%;
+  text-decoration: none !important;
+  &:hover {
+    background-color: ${({ theme }) => theme.text_secondary + "50"};
+  }
 `;
 
 const HR = styled.div`
-width: 100%;
-height: 1px;
-background-color: ${({ theme }) => theme.text_secondary + 50};
-margin: 10px 0px;
+  width: 100%;
+  height: 1px;
+  background-color: ${({ theme }) => theme.text_secondary + "50"};
+  margin: 10px 0px;
 `;
 
 const Image = styled.img`
@@ -81,71 +80,65 @@ const Image = styled.img`
 `;
 
 const Sidebar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
-    const menuItems = [
-        {
-            link: "/",
-            name: "Dashboard",
-            icon: <HomeRounded />
-        },
-    
-        {
-            link: "/search",
-            name: "Search",
-            icon: <SearchRounded />
-        },
-    
-        {
-            link: "/favorites",
-            name: "Favorites",
-            icon: <FavoriteRounded />
-        }
-    
-    ]
-    
-    const button = [
-        {
-            fun: () => setDarkMode(!darkMode),
-            name: darkMode ? "Light Mode" : "Dark Mode",
-            icon: darkMode ? <LightModeRounded /> : <DarkModeRounded />
-    
-        },
-    
-        {
-            fun: () => console.log("Logout"),
-            name: "Logout",
-            icon: <LogoutRounded />
-    
-        }
-    ]
-    return (
-        <MenuContainer menuOpen={menuOpen}>
-            <Flex>
-            <Logo>
-            <Image src={LogoIcon} />
-                CURIOUS QIRA PODCAST</Logo>
-            <Close onClick={() => setMenuOpen(false)}>
-                <CloseRounded />
-            </Close>
-            </Flex>
-            {menuItems.map((item) => 
-                <Link to={item.link} style={{ textDecoration : "none"}}>
-            <Elements>
-                {item.icon}
-                <HomeRounded />
-                <NavText>{item.name}</NavText>
-            </Elements>
-            </Link>
-            )}
-            <HR />
-            {button.map((item) => 
-            <Elements onClick={item.fun}>
-                {item.icon}
-                <HomeRounded />
-                <NavText>{item.name}</NavText>
-            </Elements>
-            )}
-        </MenuContainer>
-    )
-}
+  const menuItems = [
+    {
+      link: "/",
+      name: "Dashboard",
+      icon: <HomeRounded />,
+    },
+    {
+      link: "/search",
+      name: "Search",
+      icon: <SearchRounded />,
+    },
+    {
+      link: "/favorites",
+      name: "Favorites",
+      icon: <FavoriteRounded />,
+    },
+  ];
+
+  const button = [
+    {
+      fun: () => setDarkMode(!darkMode),
+      name: darkMode ? "Light Mode" : "Dark Mode",
+      icon: darkMode ? <LightModeRounded /> : <DarkModeRounded />,
+    },
+    {
+      fun: () => console.log("Logout"),
+      name: "Logout",
+      icon: <LogoutRounded />,
+    },
+  ];
+
+  return (
+    <MenuContainer menuOpen={menuOpen}>
+      <Flex>
+        <Logo>
+          <Image src={LogoIcon} />
+          CURIOUS QIRA PODCAST
+        </Logo>
+        <Close onClick={() => setMenuOpen(false)}>
+          <CloseRounded />
+        </Close>
+      </Flex>
+      {menuItems.map((item) => (
+        <Link to={item.link} style={{ textDecoration: "none" }}>
+          <Elements>
+            {item.icon}
+            <span>{item.name}</span>
+          </Elements>
+        </Link>
+      ))}
+      <HR />
+      {button.map((item) => (
+        <Elements onClick={item.fun}>
+          {item.icon}
+          <span>{item.name}</span>
+        </Elements>
+      ))}
+    </MenuContainer>
+  );
+};
 
 export default Sidebar;

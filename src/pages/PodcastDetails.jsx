@@ -11,7 +11,7 @@ function getPodcastIdFromUrl(url) {
     return podcastId;
   }
   //{id}
-  const link = "https://podcast-api.netlify.app/id/10716"; // Replace with your actual link
+  const link = "https://podcast-api.netlify.app/id/{id}"; // Replace with your actual link
   
   const extractedId = getPodcastIdFromUrl(link);
   
