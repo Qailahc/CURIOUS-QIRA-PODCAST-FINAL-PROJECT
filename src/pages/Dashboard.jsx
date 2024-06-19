@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Styled-components for styling
 const DashBoardMain = styled.div`
@@ -98,6 +98,7 @@ const Dashboard = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null); // Track potential errors
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
     const fetchPodcasts = async () => {
@@ -114,6 +115,11 @@ const Dashboard = () => {
 
     fetchPodcasts();
   }, []);
+
+  const handlePlay = (podcastId) => {
+    // Navigate to details page using programmatic navigation with the podcast id
+    navigate(`/podcast/${podcastId}`);
+  };
 
   return (
     <DashBoardMain>
@@ -132,9 +138,12 @@ const Dashboard = () => {
             <Podcast>
               {podcasts.map((podcast) => (
                 <Card key={podcast.id}>
+                  <div>{podcast.title}</div>
                   <Image src={podcast.image} alt={podcast.title} />
                   <Genre>{podcast.genre}</Genre>
                   <Date>{podcast.date}</Date>
+                  {/* Pass podcast.id to handlePlay function */}
+                  <button onClick={() => handlePlay(podcast.id)}>Play</button>
                 </Card>
               ))}
             </Podcast>
@@ -147,4 +156,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
