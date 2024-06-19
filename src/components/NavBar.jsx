@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Menu, PersonRounded} from "@mui/icons-material"
+import { Menu, PersonRounded, SortByAlpha } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import SearchBar from "../components/SearchBar"; 
 
 const NavBarDiv = styled.div`
   display: flex;
@@ -12,13 +13,13 @@ const NavBarDiv = styled.div`
   box-sizing: border-box;
   color: ${({ theme }) => theme.text_primary};
   gap: 30px;
-  background: ${({ theme }) => theme.bgLight}
+  background: ${({ theme }) => theme.bgLight};
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5.7px);
   -webkit-backdrop-filter: blur(5.7px);
   @media (max-width: 768px) {
-  padding: 16px;
+    padding: 16px;
   }
 `;
 
@@ -37,27 +38,54 @@ const ButtonDiv = styled.div`
   align-items: center;
   justify-content: center;
   gap: 6px;
-  &:hover{
+  &:hover {
     background-color: ${({ theme }) => theme.primary};
     color: ${({ theme }) => theme.text_primary};
   }
 `;
 
 const IcoButton = styled(IconButton)`
-color: ${({ theme }) => theme.text_secondary} !important;
+  color: ${({ theme }) => theme.text_secondary} !important;
 `;
 
+const NavBar = ({ menuOpen, setMenuOpen }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState(""); // Track sorting state
 
-const NavBar = ({  menuOpen, setMenuOpen }) => {
-    return <NavBarDiv>
-        <IcoButton onClick={() => setMenuOpen(!menuOpen)}>
-         <Menu />
-       </IcoButton>
-        <ButtonDiv>
-            <PersonRounded />
-            Login
-            </ButtonDiv>
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+  };
+
+  const handleSortAZ = () => {
+    setSortBy("AZ");
+    // Perform sorting logic here (if needed)
+  };
+
+  const handleSortZA = () => {
+    setSortBy("ZA");
+    // Perform sorting logic here (if needed)
+  };
+
+  return (
+    <NavBarDiv>
+      <IcoButton onClick={() => setMenuOpen(!menuOpen)}>
+        <Menu />
+      </IcoButton>
+      <SearchBar onSearch={handleSearch} /> {/* Include SearchBar component */}
+      <ButtonDiv onClick={handleSortAZ}>
+        <SortByAlpha />
+        A-Z
+      </ButtonDiv>
+      <ButtonDiv onClick={handleSortZA}>
+        <SortByAlpha />
+        Z-A
+      </ButtonDiv>
+      <ButtonDiv>
+        <PersonRounded />
+        Login
+      </ButtonDiv>
     </NavBarDiv>
+  );
 };
 
 export default NavBar;

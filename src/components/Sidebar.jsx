@@ -62,10 +62,6 @@ const Elements = styled.div`
   cursor: pointer;
   color: ${({ theme }) => theme.text_secondary};
   width: 100%;
-  text-decoration: none !important;
-  &:hover {
-    background-color: ${({ theme }) => theme.text_secondary + "50"};
-  }
 `;
 
 const HR = styled.div`
@@ -79,6 +75,15 @@ const Image = styled.img`
   height: 40px;
 `;
 
+const CustomLink = styled(Link)`
+  text-decoration: none;
+  color: ${({ theme }) => theme.text_secondary};
+  &:hover {
+    color: ${({ theme }) => theme.text_primary};
+    background-color: ${({ theme }) => theme.text_secondary + "50"};
+  }
+`;
+
 const Sidebar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
   const menuItems = [
     {
@@ -86,7 +91,6 @@ const Sidebar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
       name: "Dashboard",
       icon: <HomeRounded />,
     },
-
     {
       link: "/favorites",
       name: "Favorites",
@@ -119,16 +123,16 @@ const Sidebar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
         </Close>
       </Flex>
       {menuItems.map((item) => (
-        <Link to={item.link} style={{ textDecoration: "none" }}>
+        <CustomLink to={item.link} key={item.link}>
           <Elements>
             {item.icon}
             <span>{item.name}</span>
           </Elements>
-        </Link>
+        </CustomLink>
       ))}
       <HR />
-      {button.map((item) => (
-        <Elements onClick={item.fun}>
+      {button.map((item, index) => (
+        <Elements key={index} onClick={item.fun}>
           {item.icon}
           <span>{item.name}</span>
         </Elements>
@@ -138,3 +142,4 @@ const Sidebar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
 };
 
 export default Sidebar;
+

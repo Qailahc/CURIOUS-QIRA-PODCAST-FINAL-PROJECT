@@ -93,14 +93,6 @@ const Date = styled.div`
   font-size: 12px;
 `;
 
-const FavoritesButton = styled.button`
-  margin-top: 8px;
-  background-color: transparent;
-  border: none;
-  color: ${({ theme }) => theme.primary};
-  cursor: pointer;
-`;
-
 const Dashboard = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -132,18 +124,6 @@ const Dashboard = () => {
     navigate(`/podcast/${podcastId}`);
   };
 
-  const addToFavorites = (podcast) => {
-    // Retrieve existing favorites from localStorage or initialize as empty array
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    // Check if the podcast is already in favorites
-    if (!favorites.some((fav) => fav.id === podcast.id)) {
-      // Add podcast to favorites
-      favorites.push(podcast);
-      // Store updated favorites back in localStorage
-      localStorage.setItem('favorites', JSON.stringify(favorites));
-    }
-  };
-
   return (
     <DashBoardMain>
       {error && <p>Error fetching podcasts: {error.message}</p>}
@@ -166,7 +146,6 @@ const Dashboard = () => {
                   <Genre>{podcast.genre}</Genre>
                   <Date>{podcast.date}</Date>
                   <button onClick={() => navigateToEpisode(podcast.id)}>Play</button>
-                  <FavoritesButton onClick={() => addToFavorites(podcast)}>Add to Favorites</FavoritesButton>
                 </Card>
               ))}
             </Podcast>
@@ -178,4 +157,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

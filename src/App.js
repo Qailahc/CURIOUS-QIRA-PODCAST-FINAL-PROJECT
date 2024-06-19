@@ -53,7 +53,7 @@ function App() {
             <Route path="/favourite" exact element={<Favourites />} />
             <Route path="/signup" exact element={<SignUp />} />
             <Route path="/podcast/:id" exact element={<PodcastDetails/>} />
-            <Route path="/podcast/:id" element={<SeasonEpisode />} />
+            <Route path="/podcast/:id" exact element={<SeasonEpisode />} />
            </Routes>
           </Frame>
         </Container>
