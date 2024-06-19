@@ -93,17 +93,27 @@ const Date = styled.div`
   font-size: 12px;
 `;
 
-// Dashboard component to fetch and display podcasts
+const FavoritesButton = styled.button`
+  margin-top: 8px;
+  background-color: transparent;
+  border: none;
+  color: ${({ theme }) => theme.primary};
+  cursor: pointer;
+`;
+
 const Dashboard = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null); // Track potential errors
+  const [error, setError] = useState(null);
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
     const fetchPodcasts = async () => {
       try {
         const response = await fetch('https://podcast-api.netlify.app/shows');
+        if (!response.ok) {
+          throw new Error('Failed to fetch podcasts');
+        }
         const data = await response.json();
         setPodcasts(data);
       } catch (error) {
@@ -116,9 +126,22 @@ const Dashboard = () => {
     fetchPodcasts();
   }, []);
 
-  const handlePlay = (podcastId) => {
-    // Navigate to details page using programmatic navigation with the podcast id
+  const navigateToEpisode = (podcastId) => {
+    // Navigate programmatically using useNavigate hook
+    // Ensure the path matches your route setup in App.jsx
     navigate(`/podcast/${podcastId}`);
+  };
+
+  const addToFavorites = (podcast) => {
+    // Retrieve existing favorites from localStorage or initialize as empty array
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    // Check if the podcast is already in favorites
+    if (!favorites.some((fav) => fav.id === podcast.id)) {
+      // Add podcast to favorites
+      favorites.push(podcast);
+      // Store updated favorites back in localStorage
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
   };
 
   return (
@@ -142,13 +165,12 @@ const Dashboard = () => {
                   <Image src={podcast.image} alt={podcast.title} />
                   <Genre>{podcast.genre}</Genre>
                   <Date>{podcast.date}</Date>
-                  {/* Pass podcast.id to handlePlay function */}
-                  <button onClick={() => handlePlay(podcast.id)}>Play</button>
+                  <button onClick={() => navigateToEpisode(podcast.id)}>Play</button>
+                  <FavoritesButton onClick={() => addToFavorites(podcast)}>Add to Favorites</FavoritesButton>
                 </Card>
               ))}
             </Podcast>
           </FilterContainer>
-          {/* Add more FilterContainers for other categories as needed */}
         </>
       )}
     </DashBoardMain>
@@ -156,3 +178,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

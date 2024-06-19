@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { HomeRounded, CloseRounded, SearchRounded, FavoriteRounded, LightModeRounded, LogoutRounded, DarkModeRounded } from "@mui/icons-material";
+import { HomeRounded, CloseRounded, FavoriteRounded, LightModeRounded, LogoutRounded, DarkModeRounded } from "@mui/icons-material";
 import LogoIcon from "../images/Logo.png";
 import { Link } from "react-router-dom";
 
@@ -86,11 +86,7 @@ const Sidebar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
       name: "Dashboard",
       icon: <HomeRounded />,
     },
-    {
-      link: "/search",
-      name: "Search",
-      icon: <SearchRounded />,
-    },
+
     {
       link: "/favorites",
       name: "Favorites",

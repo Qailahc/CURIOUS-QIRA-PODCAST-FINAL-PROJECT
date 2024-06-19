@@ -3,6 +3,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './utils/Themes';
 import Sidebar from './components/Sidebar';
 import NavBar from './components/NavBar';
+import SeasonEpisode from './components/SeasonEpisode';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from "./pages/Dashboard"
 import Favourites from "./pages/Favourites"
@@ -52,6 +53,7 @@ function App() {
             <Route path="/favourite" exact element={<Favourites />} />
             <Route path="/signup" exact element={<SignUp />} />
             <Route path="/podcast/:id" exact element={<PodcastDetails/>} />
+            <Route path="/podcast/:id" element={<SeasonEpisode />} />
            </Routes>
           </Frame>
         </Container>
