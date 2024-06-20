@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ const Container = styled.div`
 
 const Title = styled.h2`
   margin-bottom: 10px;
-  font: bold;
+  font-weight: bold;
 `;
 
 const Description = styled.p`
@@ -78,48 +78,48 @@ const HeartIcon = styled.i`
   margin-right: 8px;
 `;
 
-const PodcastDetails = () => {
-  const { id } = useParams(); // Extracts the 'id' parameter from the URL
-  const [podcast, setPodcast] = useState(null); // State to hold the podcast data
-  const [currentSeason, setCurrentSeason] = useState(null); // State to manage the current season
-  const [favorites, setFavorites] = useState(
-    JSON.parse(localStorage.getItem('favorites')) || []
-  );
-  const audioRef = useRef(null); // Ref to manage the audio element
+const Select = styled.select`
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 16px;
+`;
+
+const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavourite }) => {
+  const { id } = useParams();
+  const audioRef = useRef(null);
 
   useEffect(() => {
-    const fetchPodcastDetails = async () => {
-      try {
-        const response = await fetch(`https://podcast-api.netlify.app/shows/${id}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch podcast with id ${id}`);
+    if (!selectedPodcast) {
+      const fetchPodcastDetails = async () => {
+        try {
+          const response = await fetch(`https://podcast-api.netlify.app/id/${id}`);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch podcast with id ${id}`);
+          }
+          const data = await response.json();
+          setSelectedPodcast(data);
+        } catch (error) {
+          console.error('Error fetching podcast:', error);
         }
-        const data = await response.json();
-        setPodcast(data);
-        // Initialize with the first season by default
-        if (data.seasons && data.seasons.length > 0) {
-          setCurrentSeason(data.seasons[0]);
-        }
-      } catch (error) {
-        console.error('Error fetching podcast:', error);
-      }
-    };
+      };
 
-    fetchPodcastDetails();
-  }, [id]);
+      fetchPodcastDetails();
+    }
+  }, [id, selectedPodcast, setSelectedPodcast]);
 
   const toggleFavorite = (episode) => {
-    const index = favorites.findIndex((item) => item.id === episode.id);
-    if (index === -1) {
-      setFavorites([...favorites, episode]);
-    } else {
-      const updatedFavorites = favorites.filter((item) => item.id !== episode.id);
-      setFavorites(updatedFavorites);
-    }
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const isFavorited = storedFavorites.some(fav => fav.id === episode.id);
+    const updatedFavorites = isFavorited
+      ? storedFavorites.filter(fav => fav.id !== episode.id)
+      : [...storedFavorites, episode];
+
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
 
   const isFavorite = (episodeId) => {
-    return favorites.some((item) => item.id === episodeId);
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    return storedFavorites.some(fav => fav.id === episodeId);
   };
 
   const handlePlayAudio = (episode) => {
@@ -129,56 +129,52 @@ const PodcastDetails = () => {
     }
   };
 
-  if (!podcast) {
+  if (!selectedPodcast) {
     return <p>Loading podcast details...</p>;
   }
 
   return (
     <Container>
-      <Title>{podcast.title}</Title>
-      <Description>{podcast.description}</Description>
-      {podcast.seasons && (
+      <Title>{selectedPodcast.title}</Title>
+      <Description>{selectedPodcast.description}</Description>
+      {selectedPodcast.seasons && (
         <SeasonContainer>
           <h2>Seasons</h2>
-          {podcast.seasons.map((season) => (
-            <div key={season.season}>
-              <SeasonTitle
-                style={{ cursor: 'pointer' }}
-                onClick={() => setCurrentSeason(season)}
-              >
+          <Select onChange={(e) => setSelectedPodcast(selectedPodcast.seasons[e.target.value])}>
+            {selectedPodcast.seasons.map((season, index) => (
+              <option key={season.season} value={index}>
                 {season.title}
-              </SeasonTitle>
-              {currentSeason === season && (
-                <EpisodeList>
-                  {season.episodes.map((episode) => (
-                    <EpisodeItem key={episode.episode}>
-                      <h4>{episode.title}</h4>
-                      <p>{episode.description}</p>
-                      <PlayButton onClick={() => handlePlayAudio(episode)}>
-                        Play Episode
-                      </PlayButton>
-                      <FavoriteButton
-                        onClick={() => toggleFavorite(episode)}
+              </option>
+            ))}
+          </Select>
+          {selectedPodcast.seasons.map((season) => (
+            <div key={season.season}>
+              <SeasonTitle>{season.title}</SeasonTitle>
+              <EpisodeList>
+                {season.episodes.map((episode) => (
+                  <EpisodeItem key={episode.episode}>
+                    <h4>{episode.title}</h4>
+                    <p>{episode.description}</p>
+                    <PlayButton onClick={() => handlePlayAudio(episode)}>Play Episode</PlayButton>
+                    <FavoriteButton
+                      onClick={() => addToFavourite(episode, selectedPodcast.title, season.title)}
+                      isFavorite={isFavorite(episode.id)}
+                    >
+                      <HeartIcon
+                        className={`fas fa-heart${isFavorite(episode.id) ? '' : '-broken'}`}
                         isFavorite={isFavorite(episode.id)}
-                      >
-                        <HeartIcon
-                          className={`fas fa-heart${isFavorite(episode.id) ? '' : '-broken'}`}
-                          isFavorite={isFavorite(episode.id)}
-                        />
-                        {isFavorite(episode.id)
-                          ? 'Remove from Favorites'
-                          : 'Add to Favorites'}
-                      </FavoriteButton>
-                      <audio ref={audioRef} src={episode.file} controls />
-                    </EpisodeItem>
-                  ))}
-                </EpisodeList>
-              )}
+                      />
+                      {isFavorite(episode.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+                    </FavoriteButton>
+                    <audio ref={audioRef} src={episode.file} controls />
+                  </EpisodeItem>
+                ))}
+              </EpisodeList>
             </div>
           ))}
         </SeasonContainer>
       )}
-      <Image src={podcast.image} alt={podcast.title} />
+      <Image src={selectedPodcast.image} alt={selectedPodcast.title} />
       <AudioPlayer ref={audioRef} controls />
     </Container>
   );
