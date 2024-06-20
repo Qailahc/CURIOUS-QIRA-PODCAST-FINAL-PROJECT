@@ -1,10 +1,9 @@
 import React from 'react';
 import Slider from 'react-slick';
-
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-export const CarouselSlider = ({ data, showIndices }) => {
+const CarouselSlider = ({ data, showIndices }) => {
   // Take the shows based on the specified indices
   const showsToDisplay = showIndices.map((index) => data[index]).filter(Boolean);
 
@@ -14,6 +13,22 @@ export const CarouselSlider = ({ data, showIndices }) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (

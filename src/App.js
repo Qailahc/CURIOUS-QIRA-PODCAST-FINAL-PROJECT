@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard"
 import Favourites from "./pages/Favourites"
 import PodcastDetails from "./pages/PodcastDetails"
 import SignUp from "./pages/SignUp"
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 const Container = styled.div`
   display: flex;

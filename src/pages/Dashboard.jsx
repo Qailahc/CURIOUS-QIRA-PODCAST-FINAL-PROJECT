@@ -93,10 +93,44 @@ const Date = styled.div`
   font-size: 12px;
 `;
 
+const PlayButton = styled.button`
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary_hover};
+  }
+`;
+
+const FavoriteButton = styled.button`
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme, isFavorite }) => (isFavorite ? theme.danger : theme.primary)};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme, isFavorite }) =>
+      isFavorite ? theme.danger_hover : theme.primary_hover};
+  }
+`;
+
 const Dashboard = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [favorites, setFavorites] = useState(
+    JSON.parse(localStorage.getItem('favorites')) || []
+  );
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
@@ -124,6 +158,25 @@ const Dashboard = () => {
     navigate(`/podcast/${podcastId}`);
   };
 
+  const toggleFavorite = (podcastId) => {
+    const index = favorites.findIndex((item) => item.id === podcastId);
+    if (index === -1) {
+      const favoritePodcast = podcasts.find((podcast) => podcast.id === podcastId);
+      setFavorites([...favorites, favoritePodcast]);
+    } else {
+      const updatedFavorites = favorites.filter((item) => item.id !== podcastId);
+      setFavorites(updatedFavorites);
+    }
+  };
+
+  const isFavorite = (podcastId) => {
+    return favorites.some((item) => item.id === podcastId);
+  };
+
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
   return (
     <DashBoardMain>
       {error && <p>Error fetching podcasts: {error.message}</p>}
@@ -132,12 +185,6 @@ const Dashboard = () => {
       ) : (
         <>
           <FilterContainer>
-            <Topic>
-              #Spotlight
-              <Link to={`/showpodcasts/spotlight`} style={{ textDecoration: 'none' }}>
-                <Span>Show All</Span>
-              </Link>
-            </Topic>
             <Podcast>
               {podcasts.map((podcast) => (
                 <Card key={podcast.id}>
@@ -145,7 +192,13 @@ const Dashboard = () => {
                   <Image src={podcast.image} alt={podcast.title} />
                   <Genre>{podcast.genre}</Genre>
                   <Date>{podcast.date}</Date>
-                  <button onClick={() => navigateToEpisode(podcast.id)}>Play</button>
+                  <PlayButton onClick={() => navigateToEpisode(podcast.id)}>Play</PlayButton>
+                  <FavoriteButton
+                    onClick={() => toggleFavorite(podcast.id)}
+                    isFavorite={isFavorite(podcast.id)}
+                  >
+                    {isFavorite(podcast.id) ? 'Remove from 🤍' : '🤍'}
+                  </FavoriteButton>
                 </Card>
               ))}
             </Podcast>

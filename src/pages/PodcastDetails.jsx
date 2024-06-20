@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div`
   padding: 20px;
@@ -41,10 +41,49 @@ const AudioPlayer = styled.audio`
   margin-top: 20px;
 `;
 
+const PlayButton = styled.button`
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary_hover};
+  }
+`;
+
+const FavoriteButton = styled.button`
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme, isFavorite }) => (isFavorite ? theme.danger : theme.primary)};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme, isFavorite }) =>
+      isFavorite ? theme.danger_hover : theme.primary_hover};
+  }
+`;
+
+const HeartIcon = styled.i`
+  color: ${({ theme, isFavorite }) => (isFavorite ? theme.danger : theme.primary)};
+  margin-right: 8px;
+`;
+
 const PodcastDetails = () => {
   const { id } = useParams(); // Extracts the 'id' parameter from the URL
   const [podcast, setPodcast] = useState(null); // State to hold the podcast data
   const [currentSeason, setCurrentSeason] = useState(null); // State to manage the current season
+  const [favorites, setFavorites] = useState(
+    JSON.parse(localStorage.getItem('favorites')) || []
+  );
   const audioRef = useRef(null); // Ref to manage the audio element
 
   useEffect(() => {
@@ -68,8 +107,18 @@ const PodcastDetails = () => {
     fetchPodcastDetails();
   }, [id]);
 
-  const handleSeasonClick = (season) => {
-    setCurrentSeason(season);
+  const toggleFavorite = (episode) => {
+    const index = favorites.findIndex((item) => item.id === episode.id);
+    if (index === -1) {
+      setFavorites([...favorites, episode]);
+    } else {
+      const updatedFavorites = favorites.filter((item) => item.id !== episode.id);
+      setFavorites(updatedFavorites);
+    }
+  };
+
+  const isFavorite = (episodeId) => {
+    return favorites.some((item) => item.id === episodeId);
   };
 
   const handlePlayAudio = (episode) => {
@@ -93,8 +142,8 @@ const PodcastDetails = () => {
           {podcast.seasons.map((season) => (
             <div key={season.season}>
               <SeasonTitle
-                style={{ cursor: "pointer" }}
-                onClick={() => handleSeasonClick(season)}
+                style={{ cursor: 'pointer' }}
+                onClick={() => setCurrentSeason(season)}
               >
                 {season.title}
               </SeasonTitle>
@@ -104,9 +153,22 @@ const PodcastDetails = () => {
                     <EpisodeItem key={episode.episode}>
                       <h4>{episode.title}</h4>
                       <p>{episode.description}</p>
-                      <button onClick={() => handlePlayAudio(episode)}>
+                      <PlayButton onClick={() => handlePlayAudio(episode)}>
                         Play Episode
-                      </button>
+                      </PlayButton>
+                      <FavoriteButton
+                        onClick={() => toggleFavorite(episode)}
+                        isFavorite={isFavorite(episode.id)}
+                      >
+                        <HeartIcon
+                          className={`fas fa-heart${isFavorite(episode.id) ? '' : '-broken'}`}
+                          isFavorite={isFavorite(episode.id)}
+                        />
+                        {isFavorite(episode.id)
+                          ? 'Remove from Favorites'
+                          : 'Add to Favorites'}
+                      </FavoriteButton>
+                      <audio ref={audioRef} src={episode.file} controls />
                     </EpisodeItem>
                   ))}
                 </EpisodeList>

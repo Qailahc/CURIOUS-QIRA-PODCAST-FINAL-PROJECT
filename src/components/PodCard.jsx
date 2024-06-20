@@ -2,7 +2,6 @@ import React from "react";
 import Avatar from '@mui/material/Avatar';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import styled from 'styled-components';
-import { IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
@@ -132,27 +131,6 @@ const Views = styled.div`
   color: ${({ theme }) => theme.text_secondary};
   width: max-content;
 `
-const Favorite = styled(IconButton)`
-  color: white;
-  top: 8px;
-  right: 6px;
-  padding: 6px !important;
-  border-radius: 50%;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  background: rgba(${({ theme }) => {
-    // Destructure the color components from theme.text_secondary
-    const { r, g, b } = theme.text_secondary;
-    // Return the RGBA color with opacity 0.95
-    return `${r}, ${g}, ${b}, 0.95`;
-  }}) !important;
-  color: white !important;
-  position: absolute !important;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 0 16px 6px #222423 !important;
-`;
-
 
 const PodCard = () => {
     return <Card>
