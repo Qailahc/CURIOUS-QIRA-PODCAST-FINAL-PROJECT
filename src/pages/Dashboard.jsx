@@ -84,9 +84,6 @@ const Dashboard = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [favorites, setFavorites] = useState(
-    JSON.parse(localStorage.getItem('favorites')) || []
-  );
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
@@ -113,25 +110,6 @@ const Dashboard = () => {
     // Ensure the path matches your route setup in App.jsx
     navigate(`/podcast/${podcastId}`);
   };
-
-  const toggleFavorite = (podcastId) => {
-    const index = favorites.findIndex((item) => item.id === podcastId);
-    if (index === -1) {
-      const favoritePodcast = podcasts.find((podcast) => podcast.id === podcastId);
-      setFavorites([...favorites, favoritePodcast]);
-    } else {
-      const updatedFavorites = favorites.filter((item) => item.id !== podcastId);
-      setFavorites(updatedFavorites);
-    }
-  };
-
-  const isFavorite = (podcastId) => {
-    return favorites.some((item) => item.id === podcastId);
-  };
-
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
 
   return (
     <DashBoardMain>
