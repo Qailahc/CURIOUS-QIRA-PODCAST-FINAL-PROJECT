@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Menu, PersonRounded, SortByAlpha } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { Menu, PersonRounded } from "@mui/icons-material";
+import { IconButton,  Select, MenuItem, FormControl } from "@mui/material";
 import SearchBar from "../components/SearchBar"; 
 
 const NavBarDiv = styled.div`
@@ -18,8 +18,11 @@ const NavBarDiv = styled.div`
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5.7px);
   -webkit-backdrop-filter: blur(5.7px);
+  /* Responsive adjustments */
   @media (max-width: 768px) {
     padding: 16px;
+    gap: 10px;
+    flex-wrap: wrap; /* Wrap elements on smaller screens */
   }
 `;
 
@@ -38,14 +41,46 @@ const ButtonDiv = styled.div`
   align-items: center;
   justify-content: center;
   gap: 6px;
+
+& > svg {
+    margin-right: 4px; /* Adjust icon spacing */
+  }
   &:hover {
     background-color: ${({ theme }) => theme.primary};
     color: ${({ theme }) => theme.text_primary};
+  }
+    /* Responsive adjustments */
+  @media (max-width: 768px) {
+    width: 100%; /* Take full width on smaller screens */
+    margin-bottom: 10px; /* Add spacing when wrapping */
+    justify-content: space-between; /* Align buttons horizontally */
   }
 `;
 
 const IcoButton = styled(IconButton)`
   color: ${({ theme }) => theme.text_secondary} !important;
+`;
+
+const SortSelect = styled(FormControl)`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 40px;
+  align-items: center;
+  box-sizing: border-box;
+  color: ${({ theme }) => theme.text_primary};
+  gap: 30px;
+  background: ${({ theme }) => theme.bgLight};
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.7px);
+  -webkit-backdrop-filter: blur(5.7px);
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    width: 100%; /* Take full width on smaller screens */
+    margin-bottom: 10px; /* Add spacing when wrapping */
+    order: 1; /* Move SortSelect above SearchBar on small screens */
+  }
 `;
 
 const NavBar = ({ menuOpen, setMenuOpen }) => {
@@ -56,14 +91,8 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
     setSearchTerm(value);
   };
 
-  const handleSortAZ = () => {
-    setSortBy("AZ");
-    // Perform sorting logic here (if needed)
-  };
-
-  const handleSortZA = () => {
-    setSortBy("ZA");
-    // Perform sorting logic here (if needed)
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
   };
 
   return (
@@ -71,15 +100,15 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
       <IcoButton onClick={() => setMenuOpen(!menuOpen)}>
         <Menu />
       </IcoButton>
-      <SearchBar onSearch={handleSearch} /> {/* Include SearchBar component */}
-      <ButtonDiv onClick={handleSortAZ}>
-        <SortByAlpha />
-        A-Z
-      </ButtonDiv>
-      <ButtonDiv onClick={handleSortZA}>
-        <SortByAlpha />
-        Z-A
-      </ButtonDiv>
+      <SearchBar onSearch={handleSearch} value={searchTerm} /> {/* Include SearchBar component with value prop */}
+      <SortSelect>
+        <Select value={sortBy} onChange={handleSortChange}>
+          <MenuItem value="title-asc">A-Z</MenuItem>
+          <MenuItem value="title-desc">Z-A</MenuItem>
+          <MenuItem value="date-added-desc">Most Recent</MenuItem>
+          <MenuItem value="date-added-asc">Oldest</MenuItem>
+        </Select>
+      </SortSelect>
       <ButtonDiv>
         <PersonRounded />
         Login

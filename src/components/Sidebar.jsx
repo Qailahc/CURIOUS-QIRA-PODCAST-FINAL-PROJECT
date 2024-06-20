@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { HomeRounded, CloseRounded, FavoriteRounded, LightModeRounded, LogoutRounded, DarkModeRounded } from "@mui/icons-material";
 import LogoIcon from "../images/Logo.png";
 import { Link } from "react-router-dom";
-import FavoritesPage from "../pages/Favourites";
 
 const MenuContainer = styled.div`
   flex: 0.5;
