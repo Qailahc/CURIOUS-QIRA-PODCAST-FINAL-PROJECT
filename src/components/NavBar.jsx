@@ -83,6 +83,8 @@ const SortSelect = styled(FormControl)`
   }
 `;
 
+
+
 const NavBar = ({ menuOpen, setMenuOpen }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState(""); // Track sorting state

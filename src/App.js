@@ -6,7 +6,7 @@ import NavBar from './components/NavBar';
 import SeasonEpisode from './components/SeasonEpisode';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from "./pages/Dashboard";
-import Favourites from "./pages/Favourites";
+import Favorites from "./pages/Favorites";
 import PodcastDetails from "./pages/PodcastDetails";
 import SignUp from "./pages/SignUp";
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -60,7 +60,7 @@ function App() {
             />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/favourites" element={<Favourites />} />
+              <Route path="/favorites" element={<Favorites />} />
               <Route path="/signup" element={<SignUp />} />
               <Route 
                 path="/podcast/:id" 
@@ -68,7 +68,7 @@ function App() {
                   <PodcastDetails 
                     selectedPodcast={selectedPodcast} 
                     setSelectedPodcast={setSelectedPodcast} 
-                    addToFavourite={addToFavorites}
+                    addToFavorite={addToFavorites}
                   />
                 } 
               />
