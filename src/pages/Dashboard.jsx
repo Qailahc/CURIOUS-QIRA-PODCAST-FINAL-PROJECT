@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Styled-components for styling
 const DashBoardMain = styled.div`
@@ -23,34 +23,6 @@ const FilterContainer = styled.div`
   background-color: ${({ theme }) => theme.bg};
   border-radius: 10px;
   padding: 20px 30px;
-`;
-
-const Topic = styled.div`
-  color: ${({ theme }) => theme.text_primary};
-  font-size: 24px;
-  font-weight: 540;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    font-size: 18px;
-  }
-`;
-
-const Span = styled.span`
-  color: ${({ theme }) => theme.primary};
-  font-size: 16px;
-  font-weight: 400;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-  }
-
-  &:hover {
-    transition: 0.2s ease-in-out;
-  }
 `;
 
 const Podcast = styled.div`
@@ -94,14 +66,20 @@ const Date = styled.div`
 `;
 
 const PlayButton = styled.button`
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.button_text};
-  border: none;
-  border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  text-decoration: none;
+  color: ${({ theme }) => theme.primary};
+  border: 1px solid ${({ theme }) => theme.primary};
+  border-radius: 12px;
+  width: 100%;
+  max-width: 70px;
+  padding: 8px 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 
   &:hover {
     background-color: ${({ theme }) => theme.primary_hover};
@@ -110,13 +88,25 @@ const PlayButton = styled.button`
 
 const FavoriteButton = styled.button`
   margin-top: 10px;
-  padding: 8px 16px;
   background-color: ${({ theme, isFavorite }) => (isFavorite ? theme.danger : theme.primary)};
-  color: ${({ theme }) => theme.button_text};
-  border: none;
-  border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  text-decoration: none;
+  color: ${({ theme }) => theme.primary};
+  border: 1px solid ${({ theme }) => theme.primary};
+  border-radius: 12px;
+  width: 100%;
+  max-width: 70px;
+  padding: 8px 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  &:hover {
+    background-color: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.text_primary};
+  }
 
   &:hover {
     background-color: ${({ theme, isFavorite }) =>
@@ -197,7 +187,7 @@ const Dashboard = () => {
                     onClick={() => toggleFavorite(podcast.id)}
                     isFavorite={isFavorite(podcast.id)}
                   >
-                    {isFavorite(podcast.id) ? 'Remove from 🤍' : '🤍'}
+                    {isFavorite(podcast.id) ? 'Remove from 🤍' : 'Add to 🤍'}
                   </FavoriteButton>
                 </Card>
               ))}

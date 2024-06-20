@@ -8,6 +8,7 @@ const Container = styled.div`
 
 const Title = styled.h2`
   margin-bottom: 10px;
+  font: bold;
 `;
 
 const Description = styled.p`
