@@ -42,20 +42,6 @@ const AudioPlayer = styled.audio`
   margin-top: 20px;
 `;
 
-const PlayButton = styled.button`
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.button_text};
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.primary_hover};
-  }
-`;
 
 const FavoriteButton = styled.button`
   margin-top: 10px;
@@ -122,13 +108,6 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavourite })
     return storedFavorites.some(fav => fav.id === episodeId);
   };
 
-  const handlePlayAudio = (episode) => {
-    if (audioRef.current) {
-      audioRef.current.src = episode.file;
-      audioRef.current.play();
-    }
-  };
-
   if (!selectedPodcast) {
     return <p>Loading podcast details...</p>;
   }
@@ -155,7 +134,7 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavourite })
                   <EpisodeItem key={episode.episode}>
                     <h4>{episode.title}</h4>
                     <p>{episode.description}</p>
-                    <PlayButton onClick={() => handlePlayAudio(episode)}>Play Episode</PlayButton>
+                    
                     <FavoriteButton
                       onClick={() => addToFavourite(episode, selectedPodcast.title, season.title)}
                       isFavorite={isFavorite(episode.id)}
@@ -164,7 +143,7 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavourite })
                         className={`fas fa-heart${isFavorite(episode.id) ? '' : '-broken'}`}
                         isFavorite={isFavorite(episode.id)}
                       />
-                      {isFavorite(episode.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+                      {isFavorite(episode.id) ? 'Remove from 🤍' : 'Add to 🤍'}
                     </FavoriteButton>
                     <audio ref={audioRef} src={episode.file} controls />
                   </EpisodeItem>

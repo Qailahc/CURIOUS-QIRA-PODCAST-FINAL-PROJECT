@@ -66,51 +66,17 @@ const Date = styled.div`
 `;
 
 const PlayButton = styled.button`
-  font-size: 14px;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.primary};
-  border: 1px solid ${({ theme }) => theme.primary};
-  border-radius: 12px;
-  width: 100%;
-  max-width: 70px;
-  padding: 8px 10px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  transition: background-color 0.3s ease;
 
   &:hover {
     background-color: ${({ theme }) => theme.primary_hover};
-  }
-`;
-
-const FavoriteButton = styled.button`
-  margin-top: 10px;
-  background-color: ${({ theme, isFavorite }) => (isFavorite ? theme.danger : theme.primary)};
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.primary};
-  border: 1px solid ${({ theme }) => theme.primary};
-  border-radius: 12px;
-  width: 100%;
-  max-width: 70px;
-  padding: 8px 10px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  &:hover {
-    background-color: ${({ theme }) => theme.primary};
-    color: ${({ theme }) => theme.text_primary};
-  }
-
-  &:hover {
-    background-color: ${({ theme, isFavorite }) =>
-      isFavorite ? theme.danger_hover : theme.primary_hover};
   }
 `;
 
@@ -183,12 +149,6 @@ const Dashboard = () => {
                   <Genre>{podcast.genre}</Genre>
                   <Date>{podcast.date}</Date>
                   <PlayButton onClick={() => navigateToEpisode(podcast.id)}>Play</PlayButton>
-                  <FavoriteButton
-                    onClick={() => toggleFavorite(podcast.id)}
-                    isFavorite={isFavorite(podcast.id)}
-                  >
-                    {isFavorite(podcast.id) ? 'Remove from 🤍' : 'Add to 🤍'}
-                  </FavoriteButton>
                 </Card>
               ))}
             </Podcast>
