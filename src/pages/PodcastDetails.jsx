@@ -7,32 +7,62 @@ import { useParams, useLocation } from 'react-router-dom';
 // Styled components
 const Container = styled.div`
   padding: 20px;
+  overflow-y: scroll; // Enables vertical scrolling
 `;
 
 const Title = styled.h2`
   margin-bottom: 10px;
   font-weight: bold;
+   margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary_hover};
+  }
 `;
 
 const Description = styled.p`
   margin-bottom: 20px;
+  color: white;
 `;
 
 const SeasonContainer = styled.div`
   margin-bottom: 20px;
+  overflow-y: scroll; // Enables vertical scrolling
 `;
 
 const SeasonTitle = styled.h3`
   margin-bottom: 10px;
+ margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme, isFavorite }) => (isFavorite ? theme.danger : theme.primary)};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme, isFavorite }) =>
+      isFavorite ? theme.danger_hover : theme.primary_hover};
+  }
 `;
 
 const EpisodeList = styled.ul`
   list-style-type: none;
   padding: 0;
+  color: white;
 `;
 
 const EpisodeItem = styled.li`
   margin-bottom: 10px;
+  color: white;
 `;
 
 const FavoriteButton = styled.button`
@@ -62,6 +92,11 @@ const Select = styled.select`
   font-size: 16px;
 `;
 
+const AudioPlayer = styled.div`
+margin-right: 10px;
+padding: 13px;
+`;
+
 const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(true);
@@ -87,9 +122,12 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
   
     useEffect(() => {
       const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-      setFavoriteEpisodes(Array.isArray(storedFavorites) ? storedFavorites : []);
+      setFavoriteEpisodes(storedFavorites);
     }, []);
-  
+
+    const audioRef = useRef(null); // Ref to manage the audio element
+
+
     const addToFavorite = (episode, podcastTitle, seasonTitle) => {
       const newFavorite = { episode, podcastTitle, seasonTitle, dateAdded: new Date() };
       const updatedFavorites = [...favoriteEpisodes, newFavorite];
@@ -115,7 +153,7 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
     if (isLoading || !selectedPodcast) {
       return <p>Loading podcast details...</p>;
     }
-
+    
   return (
     <Container>
       <Title>{selectedPodcast.title}</Title>
@@ -146,6 +184,9 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
                       <HeartIcon className={`fas fa-heart${isFavorite(episode.id) ? '' : '-broken'}`} />
                       {isFavorite(episode.id) ? 'Remove from Favorites' : 'Add to Favorites'}
                     </FavoriteButton>
+                    <AudioPlayer>
+                    <audio ref={audioRef} src={episode.file} controls />
+                    </AudioPlayer>
                   </EpisodeItem>
                 ))}
               </EpisodeList>
