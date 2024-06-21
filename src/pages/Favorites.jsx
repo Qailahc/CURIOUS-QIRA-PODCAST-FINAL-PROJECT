@@ -56,13 +56,6 @@ const Select = styled.select`
   font-size: 16px;
 `;
 
-const Image = styled.img`
-  width: 100%;
-  max-width: 200px;
-  height: auto;
-  margin-bottom: 10px;
-`;
-
 const Description = styled.p`
   color: grey;
 `;
