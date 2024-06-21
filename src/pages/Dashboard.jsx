@@ -19,11 +19,12 @@ const DashBoardMain = styled.div`
 `;
 
 const FilterContainer = styled.div`
-  display: flex;
+ display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.bg};
   border-radius: 10px;
   padding: 20px 30px;
+  gap: 20px; /* Add spacing between elements */
 `;
 
 const Podcast = styled.div`
@@ -168,7 +169,7 @@ const Dashboard = () => {
           {/* Sorting dropdown */}
           <FormControl>
             <Select value={sortBy} onChange={handleSortChange}>
-              <MenuItem value="">Sort by</MenuItem>
+              <MenuItem value="">Sort by (Default)</MenuItem>
               <MenuItem value="title-asc">Title (A-Z)</MenuItem>
               <MenuItem value="title-desc">Title (Z-A)</MenuItem>
             </Select>

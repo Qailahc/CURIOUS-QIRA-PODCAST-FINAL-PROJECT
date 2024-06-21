@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -96,7 +96,7 @@ const AudioPlayer = styled.div`
 `;
 
 // PodcastDetails component
-const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavorite: addToFavoriteProp }) => {
+const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
   const { id } = useParams(); // Get podcast id from route parameters
   const [isLoading, setIsLoading] = useState(true); // State to track loading status
   const [favoriteEpisodes, setFavoriteEpisodes] = useState([]); // State to store favorite episodes
@@ -126,10 +126,8 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavorite: ad
     setFavoriteEpisodes(storedFavorites);
   }, []);
 
-  const audioRef = useRef(null); // Ref to manage the audio element
-
   // Function to add episode to favorites
-  const addToFavorite = (episode, podcastTitle, seasonTitle) => {
+  const handleAddToFavorite = (episode, podcastTitle, seasonTitle) => {
     const newFavorite = { episode, podcastTitle, seasonTitle, dateAdded: new Date() };
     const updatedFavorites = [...favoriteEpisodes, newFavorite];
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
@@ -137,7 +135,7 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavorite: ad
   };
 
   // Function to remove episode from favorites
-  const removeFromFavorites = (episodeId) => {
+  const handleRemoveFromFavorites = (episodeId) => {
     const updatedFavorites = favoriteEpisodes.filter((fav) => fav.episode.id !== episodeId);
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     setFavoriteEpisodes(updatedFavorites); // Update favorite episodes state
@@ -186,7 +184,11 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavorite: ad
                     <p>{episode.description}</p>
                     {/* Button to add/remove from favorites */}
                     <FavoriteButton
-                      onClick={() => addToFavoriteProp(episode, selectedPodcast.title, season.title)}
+                      onClick={() => {
+                        isFavorite(episode.id)
+                          ? handleRemoveFromFavorites(episode.id)
+                          : handleAddToFavorite(episode, selectedPodcast.title, season.title);
+                      }}
                       isFavorite={isFavorite(episode.id)}
                     >
                       <HeartIcon className={`fas fa-heart${isFavorite(episode.id) ? '' : '-broken'}`} />
@@ -194,7 +196,7 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavorite: ad
                     </FavoriteButton>
                     {/* Audio player for the episode */}
                     <AudioPlayer>
-                      <audio ref={audioRef} src={episode.file} controls />
+                      <audio src={episode.file} controls />
                     </AudioPlayer>
                   </EpisodeItem>
                 ))}

@@ -42,7 +42,7 @@ const FavoritesPage = () => {
 
   // Function to remove podcast from favorites
   const removeFromFavorites = (id) => {
-    const updatedFavorites = favorites.filter((item) => item.id !== id);
+    const updatedFavorites = favorites.filter((item) => item.episode.id !== id);
     setFavorites(updatedFavorites); // Update favorites state
   };
 
@@ -71,13 +71,13 @@ const FavoritesPage = () => {
       ) : (
         <ul>
           {sortedData.map((podcast) => (
-            <li key={podcast.id}>
+            <li key={podcast.episode.id}>
               <h3>{podcast.title}</h3>
               <img src={podcast.image} alt={podcast.title} />
               {/* Placeholder audio for demonstration */}
               <audio src="https://podcast-api.netlify.app/placeholder-audio.mp3" controls />
               {/* Button to remove from favorites */}
-              <button onClick={() => removeFromFavorites(podcast.id)}>
+              <button onClick={() => removeFromFavorites(podcast.episode.id)}>
                 Remove from Favorites
               </button>
             </li>
