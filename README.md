@@ -1,6 +1,6 @@
 # CURIOUS QIRA PODCAST
 
-I've created a reponsive podcast called Curious Qira Podcast. In this podcast you will find show, search for shows using the searchbar on the Dasboard page, favourite episodes and find them in your favorites page :) I've used Netlify to deploy my site. Hope you enjoy
+Curious Qira Podcast is the responsive podcast I made. This podcast features episodes that you may favorite and locate on your favorites page. You can also use the searchbox/searchbar on the Dasboard website to find shows. My website was launched using Netlify. Wishing you pleasure :)
 
 # Setting Up My Environment:
 
