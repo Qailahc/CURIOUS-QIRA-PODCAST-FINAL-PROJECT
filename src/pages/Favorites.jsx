@@ -1,4 +1,71 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+
+// Styled components for styling
+const Container = styled.div`
+  padding: 20px;
+  overflow-y: scroll;
+`;
+
+const Title = styled.h2`
+  margin-bottom: 10px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary_hover};
+  }
+`;
+
+const FavoriteList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+const FavoriteItem = styled.li`
+  margin-bottom: 20px;
+  color: white;
+`;
+
+const FavoriteButton = styled.button`
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme, isFavorite }) => (isFavorite ? theme.danger : theme.primary)};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme, isFavorite }) =>
+      isFavorite ? theme.danger_hover : theme.primary_hover};
+  }
+`;
+
+const Select = styled.select`
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 16px;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+`;
+
+const Description = styled.p`
+  color: grey;
+`;
 
 // FavoritesPage component
 const FavoritesPage = () => {
@@ -9,14 +76,14 @@ const FavoritesPage = () => {
   // Sort functions for different criteria
   const sortByTitleAsc = (data) =>
     [...data].sort((a, b) => {
-      if (!a.title || !b.title) return 0; // Defensive check for undefined titles
-      return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+      if (!a.episode.title || !b.episode.title) return 0; // Defensive check for undefined titles
+      return a.episode.title.toLowerCase() > b.episode.title.toLowerCase() ? 1 : -1;
     });
 
   const sortByTitleDesc = (data) =>
     [...data].sort((a, b) => {
-      if (!a.title || !b.title) return 0; // Defensive check for undefined titles
-      return a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1;
+      if (!a.episode.title || !b.episode.title) return 0; // Defensive check for undefined titles
+      return a.episode.title.toLowerCase() < b.episode.title.toLowerCase() ? 1 : -1;
     });
 
   const sortByDateAddedDesc = (data) =>
@@ -41,8 +108,8 @@ const FavoritesPage = () => {
   }, [favorites]);
 
   // Function to remove podcast from favorites
-  const removeFromFavorites = (id) => {
-    const updatedFavorites = favorites.filter((item) => item.episode.id !== id);
+  const removeFromFavorites = (id, dateAdded) => {
+    const updatedFavorites = favorites.filter((item) => item.episode.id !== id || item.dateAdded !== dateAdded);
     setFavorites(updatedFavorites); // Update favorites state
   };
 
@@ -57,34 +124,33 @@ const FavoritesPage = () => {
   }
 
   return (
-    <div>
-      <h1>Favorites</h1>
+    <Container>
+      <Title>Favorites</Title>
       {/* Dropdown to select sorting criteria */}
-      <select value={sortBy} onChange={handleSortChange}>
+      <Select value={sortBy} onChange={handleSortChange}>
         <option value="title-asc">Title (A-Z)</option>
         <option value="title-desc">Title (Z-A)</option>
         <option value="date-added-desc">Recently Added</option>
-      </select>
+      </Select>
       {/* Render favorite podcasts */}
       {sortedData.length === 0 ? (
-        <p>You don't have any favorited podcasts yet.</p>
+        <Description>You don't have any favorited podcasts yet.</Description>
       ) : (
-        <ul>
+        <FavoriteList>
           {sortedData.map((podcast) => (
-            <li key={podcast.episode.id}>
-              <h3>{podcast.title}</h3>
-              <img src={podcast.image} alt={podcast.title} />
-              {/* Placeholder audio for demonstration */}
-              <audio src="https://podcast-api.netlify.app/placeholder-audio.mp3" controls />
-              {/* Button to remove from favorites */}
-              <button onClick={() => removeFromFavorites(podcast.episode.id)}>
+            <FavoriteItem key={podcast.episode.id}>
+              <Title>{podcast.episode.title}</Title>
+              <Description>{podcast.seasonTitle} - {podcast.podcastTitle}</Description>
+              <Description>Date Added: {podcast.dateAdded}</Description> {/* Display date added */}
+              <audio src={podcast.episode.file} controls />
+              <FavoriteButton onClick={() => removeFromFavorites(podcast.episode.id, podcast.dateAdded)}>
                 Remove from Favorites
-              </button>
-            </li>
+              </FavoriteButton>
+            </FavoriteItem>
           ))}
-        </ul>
+        </FavoriteList>
       )}
-    </div>
+    </Container>
   );
 };
 

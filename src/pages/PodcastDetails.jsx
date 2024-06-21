@@ -96,7 +96,7 @@ const AudioPlayer = styled.div`
 `;
 
 // PodcastDetails component
-const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
+const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, handleAddToFavorite }) => {
   const { id } = useParams(); // Get podcast id from route parameters
   const [isLoading, setIsLoading] = useState(true); // State to track loading status
   const [favoriteEpisodes, setFavoriteEpisodes] = useState([]); // State to store favorite episodes
@@ -127,11 +127,12 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
   }, []);
 
   // Function to add episode to favorites
-  const handleAddToFavorite = (episode, podcastTitle, seasonTitle) => {
+  const handleAddToFavoriteEpisode = (episode, podcastTitle, seasonTitle) => {
     const newFavorite = { episode, podcastTitle, seasonTitle, dateAdded: new Date() };
     const updatedFavorites = [...favoriteEpisodes, newFavorite];
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     setFavoriteEpisodes(updatedFavorites); // Update favorite episodes state
+    handleAddToFavorite(episode, podcastTitle, seasonTitle); // Call the parent function
   };
 
   // Function to remove episode from favorites
@@ -187,7 +188,7 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
                       onClick={() => {
                         isFavorite(episode.id)
                           ? handleRemoveFromFavorites(episode.id)
-                          : handleAddToFavorite(episode, selectedPodcast.title, season.title);
+                          : handleAddToFavoriteEpisode(episode, selectedPodcast.title, season.title);
                       }}
                       isFavorite={isFavorite(episode.id)}
                     >

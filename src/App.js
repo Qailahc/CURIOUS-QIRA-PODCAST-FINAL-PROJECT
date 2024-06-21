@@ -42,47 +42,46 @@ function App() {
 
   return (
     <AuthProvider>
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-      <BrowserRouter>
-        <Container>
-          {menuOpen && (
-            <Sidebar 
-              menuOpen={menuOpen}
-              setMenuOpen={setMenuOpen}
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
-            />
-          )}
-          <Frame>
-            <NavBar
-              menuOpen={menuOpen}
-              setMenuOpen={setMenuOpen}
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
-            />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/favorites" element={<Favorites />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route 
-                path="/podcast/:id" 
-                element={
-                  <PodcastDetails 
-                    selectedPodcast={selectedPodcast} 
-                    setSelectedPodcast={setSelectedPodcast} 
-                    addToFavorite={handleAddToFavorite}
-                  />
-                } 
+      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+        <BrowserRouter>
+          <Container>
+            {menuOpen && (
+              <Sidebar 
+                menuOpen={menuOpen}
+                setMenuOpen={setMenuOpen}
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
               />
-              <Route path="/season/:id" element={<SeasonEpisode />} />
-            </Routes>
-          </Frame>
-        </Container>
-      </BrowserRouter>
-    </ThemeProvider>
+            )}
+            <Frame>
+              <NavBar
+                menuOpen={menuOpen}
+                setMenuOpen={setMenuOpen}
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/favorites" element={<Favorites />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route 
+                  path="/podcast/:id" 
+                  element={
+                    <PodcastDetails 
+                      selectedPodcast={selectedPodcast} 
+                      setSelectedPodcast={setSelectedPodcast} 
+                      handleAddToFavorite={handleAddToFavorite} // Corrected prop name
+                    />
+                  } 
+                />
+                <Route path="/season/:id" element={<SeasonEpisode />} />
+              </Routes>
+            </Frame>
+          </Container>
+        </BrowserRouter>
+      </ThemeProvider>
     </AuthProvider>
   );
 }
-
 
 export default App;
