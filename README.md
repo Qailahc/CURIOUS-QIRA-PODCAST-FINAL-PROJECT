@@ -1,5 +1,7 @@
 # CURIOUS QIRA PODCAST
 
+Curious Qira Podcast is the responsive podcast I made. This podcast features episodes that you may favorite and locate on your favorites page. You can also use the searchbox/searchbar on the Dasboard website to find shows. My website was launched using Netlify. Wishing you pleasure :)
+
 # Setting Up My Environment:
 
 Installed Node.js from nodejs.org.
@@ -26,7 +28,7 @@ Performance Optimization:
 Ensured a smooth user experience.
 
 Deployment choice:
-Netlify
+Netlify - https://master--curious-qira-podcast.netlify.app/
 
 
 # Struggles:
