@@ -1,5 +1,7 @@
 # CURIOUS QIRA PODCAST
 
+I've created a reponsive podcast called Curious Qira Podcast. In this podcast you will find show, search for shows using the searchbar on the Dasboard page, favourite episodes and find them in your favorites page :) I've used Netlify to deploy my site. Hope you enjoy
+
 # Setting Up My Environment:
 
 Installed Node.js from nodejs.org.
