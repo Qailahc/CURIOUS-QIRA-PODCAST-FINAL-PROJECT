@@ -7,10 +7,16 @@ const FavoritesPage = () => {
 
   // Sort functions
   const sortByTitleAsc = (data) =>
-    [...data].sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
+    [...data].sort((a, b) => {
+      if (!a.title || !b.title) return 0; // Defensive check for undefined titles
+      return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+    });
 
   const sortByTitleDesc = (data) =>
-    [...data].sort((a, b) => (a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1));
+    [...data].sort((a, b) => {
+      if (!a.title || !b.title) return 0; // Defensive check for undefined titles
+      return a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1;
+    });
 
   const sortByDateAddedDesc = (data) =>
     [...data].sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
@@ -25,7 +31,9 @@ const FavoritesPage = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(favorites));
+    if (favorites.length > 0) {
+      localStorage.setItem(localStorageKey, JSON.stringify(favorites));
+    }
   }, [favorites]);
 
   // Function to remove from favorites
