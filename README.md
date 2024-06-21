@@ -1,4 +1,47 @@
-# Getting Started with Create React App
+# CURIOUS QIRA PODCAST
+
+# Setting Up My Environment:
+
+Installed Node.js from nodejs.org.
+Use npx create-react-app my-app to create a new React project (replaced “podcast-5” with my desired project name - this was my 5th attempt on the project).
+Navigated to your project folder using cd my-app, which is called "client". Though the name of my podcast is 'CURIOUS QIRA PODCAST'.
+
+Project Structure and Code Organization:
+Organized my project by grouping related components, styles, and utilities.
+
+Component-Based Architecture:
+Created functional components to encapsulate UI logic.
+Used props to pass data between components.
+Used component composition for complex UIs.
+
+
+Fetching Data with APIs:
+Used React’s built-in hooks (like useEffect and useState) to fetch data from APIs.
+Updated the UI dynamically based on fetched data.
+
+Styling:
+Used Styled Components for reusable styled elements. I am more comfortable with CSS than Tailwind, so I've used Styling Components instead.
+
+Performance Optimization:
+Ensured a smooth user experience.
+
+Deployment choice:
+Netlify
+
+
+# Struggles:
+
+State Management with Redux:
+As your app grows, manage state effectively using Redux.
+Centralize your app’s state and handle complex interactions.
+
+Local Storage:
+Struggled to get the local storage to show whenever I went on the FavoitesPage, which made it difficult to work on that page, but managed to fix the issue, by fixing up the syntax in my FavoritePage.
+
+Time Management:
+I've worked on this project for 4 days only, it was quite challenging trying to implement all the user stories in such a short amount of time.
+
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -68,3 +111,15 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# Contact Me
+
+### Socials - You can contact me at:
+
+* ✉️  Email: [cqailah@gmailcom](mailto:cqailah@gmailcom)
+
+
+### Socials
+
+
+<p align="left"> <a href="https://www.codepen.io/Qailahc" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/codepen-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/codepen.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/codepen.svg" width="32" height="32" /> </picture> </a> <a href="https://discord.com/users/qailahc" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/discord-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/discord.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/discord.svg" width="32" height="32" /> </picture> </a> <a href="https://www.github.com/Qailahc" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github.svg" width="32" height="32" /> </picture> </a> <a href="http://www.instagram.com/iam.qailah" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/instagram-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/instagram.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/instagram.svg" width="32" height="32" /> </picture> </a> <a href="https://www.linkedin.com/in/qailah-conway-6805852b9" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin.svg" width="32" height="32" /> </picture> </a></p>
