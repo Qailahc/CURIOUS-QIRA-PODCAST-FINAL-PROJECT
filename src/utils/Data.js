@@ -1,3 +1,4 @@
+// Supposed to be a genre file
 export const Category = [
     {
         name: "Culture",

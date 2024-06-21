@@ -1,79 +1,54 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Menu, PersonRounded } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import React from 'react';
+import Slider from 'react-slick'; // Importing Slider component from react-slick library
+import 'slick-carousel/slick/slick.css'; // Importing CSS for slick slider
+import 'slick-carousel/slick/slick-theme.css'; // Importing theme CSS for slick slider
 
-const NavBarDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 16px 40px;
-  align-items: center;
-  box-sizing: border-box;
-  color: ${({ theme }) => theme.text_primary};
-  gap: 30px;
-  background: ${({ theme }) => theme.bgLight};
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5.7px);
-  -webkit-backdrop-filter: blur(5.7px);
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    padding: 16px;
-    gap: 10px;
-    flex-wrap: wrap; /* Wrap elements on smaller screens */
-  }
-`;
+// CarouselSlider component for rendering a carousel slider
+const CarouselSlider = ({ data, showIndices }) => {
+  // Take the shows based on the specified indices
+  const showsToDisplay = showIndices.map((index) => data[index]).filter(Boolean); // Filtering out null or undefined values
 
-const ButtonDiv = styled.div`
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.primary};
-  border: 1px solid ${({ theme }) => theme.primary};
-  border-radius: 12px;
-  width: 100%;
-  max-width: 70px;
-  padding: 8px 10px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-
-  & > svg {
-    margin-right: 4px; /* Adjust icon spacing */
-  }
-  &:hover {
-    background-color: ${({ theme }) => theme.primary};
-    color: ${({ theme }) => theme.text_primary};
-  }
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    width: 100%; /* Take full width on smaller screens */
-    margin-bottom: 10px; /* Add spacing when wrapping */
-    justify-content: space-between; /* Align buttons horizontally */
-  }
-`;
-
-const IcoButton = styled(IconButton)`
-  color: ${({ theme }) => theme.text_secondary} !important;
-`;
-
-const NavBar = ({ menuOpen, setMenuOpen }) => {
-  // Removed unnecessary state and functions
+  // Settings configuration for the slider
+  const settings = {
+    dots: true, // Show navigation dots
+    infinite: true, // Looping through slides infinitely
+    speed: 500, // Transition speed in milliseconds
+    slidesToShow: 1, // Number of slides to show at once
+    slidesToScroll: 1, // Number of slides to scroll at a time
+    responsive: [ // Responsive settings for different breakpoints
+      {
+        breakpoint: 768, // Breakpoint for tablet devices
+        settings: {
+          slidesToShow: 1, // Adjust slides to show for tablet devices
+          slidesToScroll: 1, // Adjust slides to scroll for tablet devices
+        },
+      },
+      {
+        breakpoint: 480, // Breakpoint for mobile devices
+        settings: {
+          slidesToShow: 1, // Adjust slides to show for mobile devices
+          slidesToScroll: 1, // Adjust slides to scroll for mobile devices
+        },
+      },
+    ],
+  };
 
   return (
-    <NavBarDiv>
-      <IcoButton onClick={() => setMenuOpen(!menuOpen)}>
-        <Menu />
-      </IcoButton>
-      <ButtonDiv>
-        <PersonRounded />
-        Login
-      </ButtonDiv>
-    </NavBarDiv>
+    <div>
+      {/* Title for the carousel */}
+      <h2 className='slider-heading'>Shows you may be interested in ...</h2>
+      {/* Slider component with settings */}
+      <Slider {...settings} className='slider-grid'>
+        {/* Mapping through shows to display each show */}
+        {showsToDisplay.map((show) => (
+          <div key={show.id}>
+            <h3>{show.title}</h3> {/* Show title */}
+            <img src={show.image} alt={show.title} /> {/* Show image */}
+          </div>
+        ))}
+      </Slider>
+    </div>
   );
 };
 
-export default NavBar;
+export default CarouselSlider; // Exporting the CarouselSlider component

@@ -92,7 +92,6 @@ const SearchBar = styled.input`
   margin: 0 auto; /* Center horizontally */
 `;
 
-
 const Dashboard = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,6 +103,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPodcasts = async () => {
       try {
+        // Fetch podcasts from API
         const response = await fetch('https://podcast-api.netlify.app/shows');
         if (!response.ok) {
           throw new Error('Failed to fetch podcasts');
@@ -111,26 +111,31 @@ const Dashboard = () => {
         const data = await response.json();
         setPodcasts(data);
       } catch (error) {
+        // Handle error if fetching fails
         setError(error);
       } finally {
+        // Set loading state to false when fetching completes
         setIsLoading(false);
       }
     };
-    fetchPodcasts();
+    fetchPodcasts(); // Call fetchPodcasts function on component mount
   }, []);
 
+  // Function to navigate to specific podcast episode
   const navigateToEpisode = (podcastId) => {
     // Navigate programmatically using useNavigate hook
     // Ensure the path matches your route setup in App.jsx
     navigate(`/podcast/${podcastId}`);
   };
 
+  // Function to handle search input change
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value); // Update search term state
   };
 
+  // Function to handle sorting option change
   const handleSortChange = (event) => {
-    setSortBy(event.target.value);
+    setSortBy(event.target.value); // Update sorting option state
   };
 
   // Filter and sort podcasts based on search term and sort option
@@ -140,9 +145,9 @@ const Dashboard = () => {
 
   const sortedPodcasts = [...filteredPodcasts].sort((a, b) => {
     if (sortBy === 'title-asc') {
-      return a.title.localeCompare(b.title);
+      return a.title.localeCompare(b.title); // Sort by title ascending
     } else if (sortBy === 'title-desc') {
-      return b.title.localeCompare(a.title);
+      return b.title.localeCompare(a.title); // Sort by title descending
     } else {
       return 0; // No sorting
     }
@@ -153,12 +158,14 @@ const Dashboard = () => {
       {error && <p>Error fetching podcasts: {error.message}</p>}
       {!isLoading ? (
         <FilterContainer>
+          {/* Search input */}
           <SearchBar
             type="text"
             placeholder="Search by title..."
             value={searchTerm}
             onChange={handleSearchChange}
           />
+          {/* Sorting dropdown */}
           <FormControl>
             <Select value={sortBy} onChange={handleSortChange}>
               <MenuItem value="">Sort by</MenuItem>
@@ -166,6 +173,7 @@ const Dashboard = () => {
               <MenuItem value="title-desc">Title (Z-A)</MenuItem>
             </Select>
           </FormControl>
+          {/* Display sorted podcasts */}
           <Podcast>
             {sortedPodcasts.map((podcast) => (
               <Card key={podcast.id}>
@@ -173,6 +181,7 @@ const Dashboard = () => {
                 <Image src={podcast.image} alt={podcast.title} />
                 <Genre>{podcast.genre}</Genre>
                 <Date>{podcast.date}</Date>
+                {/* Button to play podcast episode */}
                 <PlayButton onClick={() => navigateToEpisode(podcast.id)}>Play</PlayButton>
               </Card>
             ))}

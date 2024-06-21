@@ -1,3 +1,4 @@
+// Dark and light themed colours
 export const darkTheme = {
     bg:"#15171E",
     bgLight: "#1C1E27",
