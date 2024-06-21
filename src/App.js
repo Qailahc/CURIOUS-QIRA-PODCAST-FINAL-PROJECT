@@ -10,6 +10,7 @@ import Favorites from "./pages/Favorites";
 import PodcastDetails from "./pages/PodcastDetails";
 import SignUp from "./pages/SignUp";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { AuthProvider } from './AuthContext';
 
 const Container = styled.div`
   display: flex;
@@ -40,6 +41,7 @@ function App() {
   const [selectedPodcast, setSelectedPodcast] = useState(null);
 
   return (
+    <AuthProvider>
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <BrowserRouter>
         <Container>
@@ -78,7 +80,9 @@ function App() {
         </Container>
       </BrowserRouter>
     </ThemeProvider>
+    </AuthProvider>
   );
 }
+
 
 export default App;

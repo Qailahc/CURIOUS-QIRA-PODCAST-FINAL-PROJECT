@@ -63,54 +63,58 @@ const Select = styled.select`
 `;
 
 const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
-  const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
-  const location = useLocation();
-
-  useEffect(() => {
-    const fetchPodcastDetails = async () => {
-      try {
-        const response = await fetch(`https://podcast-api.netlify.app/id/${id}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch podcast with id ${id}`);
+    const { id } = useParams();
+    const [isLoading, setIsLoading] = useState(true);
+    const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
+  
+    useEffect(() => {
+      const fetchPodcastDetails = async () => {
+        try {
+          const response = await fetch(`https://podcast-api.netlify.app/id/${id}`);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch podcast with id ${id}`);
+          }
+          const data = await response.json();
+          setSelectedPodcast(data);
+          setIsLoading(false);
+        } catch (error) {
+          console.error('Error fetching podcast:', error);
         }
-        const data = await response.json();
-        setSelectedPodcast(data);
-        setIsLoading(false);
+      };
+  
+      fetchPodcastDetails();
+    }, [id, setSelectedPodcast]);
+  
+    useEffect(() => {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      setFavoriteEpisodes(Array.isArray(storedFavorites) ? storedFavorites : []);
+    }, []);
+  
+    const addToFavorite = (episode, podcastTitle, seasonTitle) => {
+      const newFavorite = { episode, podcastTitle, seasonTitle, dateAdded: new Date() };
+      const updatedFavorites = [...favoriteEpisodes, newFavorite];
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      setFavoriteEpisodes(updatedFavorites);
+    };
+  
+    const removeFromFavorites = (episodeId) => {
+      const updatedFavorites = favoriteEpisodes.filter((fav) => fav.episode.id !== episodeId);
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      setFavoriteEpisodes(updatedFavorites);
+    };
+  
+    const isFavorite = (episodeId) => {
+      try {
+        return favoriteEpisodes.some((fav) => fav.episode.id === episodeId);
       } catch (error) {
-        console.error('Error fetching podcast:', error);
+        console.error('Error checking favorite:', error);
+        return false;
       }
     };
-
-    fetchPodcastDetails();
-  }, [id, setSelectedPodcast]);
-
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    setFavoriteEpisodes(storedFavorites);
-  }, []);
-
-  const addToFavorite = (episode, podcastTitle, seasonTitle) => {
-    const newFavorite = { episode, podcastTitle, seasonTitle, dateAdded: new Date() };
-    const updatedFavorites = [...favoriteEpisodes, newFavorite];
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-    setFavoriteEpisodes(updatedFavorites);
-  };
-
-  const removeFromFavorites = (episodeId) => {
-    const updatedFavorites = favoriteEpisodes.filter((fav) => fav.episode.id !== episodeId);
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-    setFavoriteEpisodes(updatedFavorites);
-  };
-
-  const isFavorite = (episodeId) => {
-    return favoriteEpisodes.some((fav) => fav.episode.id === episodeId);
-  };
-
-  if (isLoading || !selectedPodcast) {
-    return <p>Loading podcast details...</p>;
-  }
+  
+    if (isLoading || !selectedPodcast) {
+      return <p>Loading podcast details...</p>;
+    }
 
   return (
     <Container>
