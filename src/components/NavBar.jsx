@@ -1,5 +1,5 @@
 // Import necessary dependencies from React, styled-components, and Material-UI
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Menu, PersonRounded } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
