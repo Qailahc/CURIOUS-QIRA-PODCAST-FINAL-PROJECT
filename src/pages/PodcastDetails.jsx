@@ -29,7 +29,7 @@ const Title = styled.h2`
 
 const Description = styled.p`
   margin-bottom: 20px;
-  color: white;
+  color: grey;
 `;
 
 const SeasonContainer = styled.div`
@@ -57,7 +57,7 @@ const SeasonTitle = styled.h3`
 const EpisodeList = styled.ul`
   list-style-type: none;
   padding: 0;
-  color: white;
+  color: grey;
 `;
 
 const EpisodeItem = styled.li`
@@ -97,7 +97,8 @@ margin-right: 10px;
 padding: 13px;
 `;
 
-const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
+const PodcastDetails = ({ selectedPodcast, setSelectedPodcast, addToFavorite: addToFavoriteProp }) => {
+
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
@@ -178,7 +179,8 @@ const PodcastDetails = ({ selectedPodcast, setSelectedPodcast }) => {
                     <p>{episode.description}</p>
 
                     <FavoriteButton
-                      onClick={() => addToFavorite(episode, selectedPodcast.title, season.title)}
+                      onClick={() => addToFavoriteProp(episode, selectedPodcast.title, season.title)}
+
                       isFavorite={isFavorite(episode.id)}
                     >
                       <HeartIcon className={`fas fa-heart${isFavorite(episode.id) ? '' : '-broken'}`} />

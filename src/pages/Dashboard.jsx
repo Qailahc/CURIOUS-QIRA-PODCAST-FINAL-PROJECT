@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { MenuItem, FormControl, Select } from '@mui/material';
 
 // Styled-components for styling
 const DashBoardMain = styled.div`
@@ -80,10 +81,25 @@ const PlayButton = styled.button`
   }
 `;
 
+const SearchBar = styled.input`
+padding: 8px;
+  margin-bottom: 20px;
+
+   display: flex;
+  align-items: center;
+  border: 1px solid ${({ theme }) => theme.primary};
+  border-radius: 12px;
+  padding: 4px 12px;
+  width: 300px;
+  max-width: 80%;
+`;
+
 const Dashboard = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('');
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
@@ -101,7 +117,6 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     };
-
     fetchPodcasts();
   }, []);
 
@@ -111,27 +126,61 @@ const Dashboard = () => {
     navigate(`/podcast/${podcastId}`);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  // Filter and sort podcasts based on search term and sort option
+  const filteredPodcasts = podcasts.filter((podcast) =>
+    podcast.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const sortedPodcasts = [...filteredPodcasts].sort((a, b) => {
+    if (sortBy === 'title-asc') {
+      return a.title.localeCompare(b.title);
+    } else if (sortBy === 'title-desc') {
+      return b.title.localeCompare(a.title);
+    } else {
+      return 0; // No sorting
+    }
+  });
+
   return (
     <DashBoardMain>
       {error && <p>Error fetching podcasts: {error.message}</p>}
-      {isLoading ? (
-        <p>Loading podcasts...</p>
+      {!isLoading ? (
+        <FilterContainer>
+          <SearchBar
+            type="text"
+            placeholder="Search by title..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <FormControl>
+            <Select value={sortBy} onChange={handleSortChange}>
+              <MenuItem value="">Sort by</MenuItem>
+              <MenuItem value="title-asc">Title (A-Z)</MenuItem>
+              <MenuItem value="title-desc">Title (Z-A)</MenuItem>
+            </Select>
+          </FormControl>
+          <Podcast>
+            {sortedPodcasts.map((podcast) => (
+              <Card key={podcast.id}>
+                <div>{podcast.title}</div>
+                <Image src={podcast.image} alt={podcast.title} />
+                <Genre>{podcast.genre}</Genre>
+                <Date>{podcast.date}</Date>
+                <PlayButton onClick={() => navigateToEpisode(podcast.id)}>Play</PlayButton>
+              </Card>
+            ))}
+          </Podcast>
+        </FilterContainer>
       ) : (
-        <>
-          <FilterContainer>
-            <Podcast>
-              {podcasts.map((podcast) => (
-                <Card key={podcast.id}>
-                  <div>{podcast.title}</div>
-                  <Image src={podcast.image} alt={podcast.title} />
-                  <Genre>{podcast.genre}</Genre>
-                  <Date>{podcast.date}</Date>
-                  <PlayButton onClick={() => navigateToEpisode(podcast.id)}>Play</PlayButton>
-                </Card>
-              ))}
-            </Podcast>
-          </FilterContainer>
-        </>
+        <p>Loading podcasts...</p>
       )}
     </DashBoardMain>
   );

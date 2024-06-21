@@ -1,4 +1,57 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+
+// Styled components
+const Container = styled.div`
+  padding: 20px;
+  overflow-y: scroll; // Enables vertical scrolling
+`;
+
+const Title = styled.h2`
+  margin-bottom: 10px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary_hover};
+  }
+`;
+
+const EpisodeList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+const EpisodeItem = styled.li`
+  margin-bottom: 20px;
+`;
+
+const EpisodeTitle = styled.h3`
+  margin-bottom: 10px;
+  padding: 8px 16px;
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.button_text};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary_hover};
+  }
+`;
+
+const Description = styled.p`
+  margin-bottom: 10px;
+`;
+
 
 const FavoritesPage = () => {
   const localStorageKey = 'favorites'; // Key for local storage
@@ -68,7 +121,7 @@ const FavoritesPage = () => {
             <li key={podcast.id}>
               <h3>{podcast.title}</h3>
               <img src={podcast.image} alt={podcast.title} />
-              <audio src={podcast.audio} controls />
+              <audio src="https://podcast-api.netlify.app/placeholder-audio.mp3" controls />
               <button onClick={() => removeFromFavorites(podcast.id)}>
                 Remove from Favorites
               </button>

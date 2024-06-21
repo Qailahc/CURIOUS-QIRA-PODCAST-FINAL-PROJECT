@@ -96,6 +96,7 @@ const NavBar = ({ menuOpen, setMenuOpen }) => {
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
   };
+  
 
   return (
     <NavBarDiv>
