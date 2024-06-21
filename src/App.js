@@ -28,7 +28,7 @@ const Frame = styled.div`
 `;
 
 function App() {
-  const addToFavorites = (episode, show, season) => {
+  const handleAddToFavorite = (episode, show, season) => {
     const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     const newFavorite = { episode, show, season, dateAdded: new Date() };
     const updatedFavorites = [...storedFavorites, newFavorite];
@@ -70,7 +70,7 @@ function App() {
                   <PodcastDetails 
                     selectedPodcast={selectedPodcast} 
                     setSelectedPodcast={setSelectedPodcast} 
-                    addToFavorite={addToFavorites}
+                    addToFavorite={handleAddToFavorite}
                   />
                 } 
               />
