@@ -82,17 +82,16 @@ const PlayButton = styled.button`
 `;
 
 const SearchBar = styled.input`
-padding: 8px;
-  margin-bottom: 20px;
-
-   display: flex;
+  display: flex;
   align-items: center;
   border: 1px solid ${({ theme }) => theme.primary};
   border-radius: 12px;
-  padding: 4px 12px;
-  width: 300px;
-  max-width: 80%;
+  padding: 8px 12px; /* Increased padding */
+  width: 300px; /* Fixed width */
+  max-width: 80%; /* Maximum width */
+  margin: 0 auto; /* Center horizontally */
 `;
+
 
 const Dashboard = () => {
   const [podcasts, setPodcasts] = useState([]);
