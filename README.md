@@ -26,7 +26,7 @@ Performance Optimization:
 Ensured a smooth user experience.
 
 Deployment choice:
-Netlify
+Netlify - https://master--curious-qira-podcast.netlify.app/
 
 
 # Struggles:
