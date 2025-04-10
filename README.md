@@ -118,7 +118,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Socials - You can contact me at:
 
-* ✉️  Email: [cqailah@gmailcom](mailto:cqailah@gmailcom)
+* ✉️  Email: [cqailah@gmailcom](mailto:cqailah@gmailcom) 
 
 
 ### Socials
