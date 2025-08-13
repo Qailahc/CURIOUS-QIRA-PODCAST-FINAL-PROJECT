@@ -13,7 +13,7 @@ Organized my project by grouping related components, styles, and utilities.
 
 Component-Based Architecture:
 Created functional components to encapsulate UI logic.
-Used props to pass data between components.
+Used props to pass data between components. 
 Used component composition for complex UIs.
 
 
